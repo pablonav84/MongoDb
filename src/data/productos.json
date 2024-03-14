@@ -1,4 +1,3 @@
-db.zapas.insertMany(
 [
      {
           "id": 1,
@@ -87,5 +86,27 @@ db.zapas.insertMany(
           "status": true,
           "stock": 20,
           "category": "zapatillas"
+     },
+     {
+          "id": 9,
+          "title": "jordan",
+          "description": "zapas blancas",
+          "price": 120000,
+          "thumbnail": "img1",
+          "code": "cde124",
+          "status": false,
+          "stock": 20,
+          "category": "zapatillas"
+     },
+     {
+          "id": 10,
+          "title": "jordan",
+          "description": "zapas blancas",
+          "price": 120000,
+          "thumbnail": "img1",
+          "code": "cde125",
+          "status": false,
+          "stock": 20,
+          "category": "zapatillas"
      }
-])
+]
