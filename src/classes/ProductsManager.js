@@ -1,4 +1,4 @@
-import { modeloUsuarios } from "../dao/models/productos.modelo.js"
+import { modeloProductos } from "../dao/models/productos.modelo.js"
 
 export class ProductsManager{
     constructor(){
@@ -6,41 +6,20 @@ export class ProductsManager{
     }
 
     async getProducts(){
-        return await modeloUsuarios.find()
+        return await modeloProductos.find()
+}
+
+async getProductByCode(code){
+  return await modeloProductos.findOne({code})
 }
 
 saveDatos(ruta, datos){
     fs.writeFileSync(ruta, JSON.stringify(datos, null, 5))
 }
 
-addProduct(product) {
-
-    let products = this.getProducts();
-
-    let id = 1;
-    if (products.length > 0) {
-        // Filtrar los productos con valores de ID nulos o indefinidos
-        let filteredProducts = products.filter(p => p.id !== null && p.id !== undefined);
-        id = Math.max(...filteredProducts.map(d => d.id)) + 1;
-    }
-
-    let nuevoProducto = {
-        id,
-        ...product
-    };
-
-    products.push(nuevoProducto);
-    this.saveDatos(this.path, products);
-
-    return nuevoProducto;
+async addProduct(product) {
+    return await modeloProductos.create(product);
 }
-
-getProductById(id) {
-    let products = this.getProducts();
-    let foundProduct = products.find(product => product.id === id);
-
-    return foundProduct;
-  }
 
   updateProduct(id, updatedFields) {
       const products = this.getProducts();

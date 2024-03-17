@@ -7,8 +7,11 @@ const prodSchema=new mongoose.Schema(
             description: String,
             price: Number,
             thumbnail: String,
-            code: String,
-            status: Boolean,
+            code: {
+                type: String,
+                required: true,
+                unique: true
+            },
             stock: Number,
             category: String
     },
@@ -17,4 +20,4 @@ const prodSchema=new mongoose.Schema(
     }
 )
 
-export const modeloUsuarios=mongoose.model(prodCollection, prodSchema)
+export const modeloProductos=mongoose.model(prodCollection, prodSchema)

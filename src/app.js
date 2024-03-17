@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import __dirname from './utils.js'
-import { router as vistaRouter } from './routes/vistaRouter.js';
+import { router as productRouter } from './routes/productRouter.js';
 
 const PORT = 8080;
 
@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
   res.status(404).send('error 404 - page not found');
 });
 
-app.use('/api/productos', vistaRouter);
+app.use('/api/productos', productRouter);
 
 const server = app.listen(PORT, () => {
   console.log(`Server escuchando en puerto PORT ${PORT}`);
