@@ -1,24 +1,32 @@
 import { Router } from 'express';
-import { ProductsManager } from '../classes/ProductsManager.js';
-import { rutaProducts } from '../utils.js';
-
+import { creaHash, rutaProducts } from '../utils.js';
+import { ProductsManager } from '../dao/ProductsManager.js';
 
 export const router=Router()
 
-let productsManager=new ProductsManager(rutaProducts)
+let productsManager=new ProductsManager(rutaProducts);
 
 router.get('/', async (req, res)=>{
 
-  let products= await productsManager.getProducts()
-
+  try {
+    let products= await productsManager.getProducts()
   res.status(200).json({products})
+  } catch (error) {
+    res.setHeader('Content-Type', 'application/json')
+    return res.status(500).json(
+      {
+        error:`Error inesperado en el servidor`,
+        detalle: `${error.message}`
+      }
+    )
+  }
 })
 
 router.post('/', async (req, res) => {
 
-  const { title, description, price, thumbnail, code, stock, category } = req.body;
+  let { title, description, price, thumbnail, code, stock, category, password } = req.body;
   // Verificar si alguno de los campos está incompleto
-  if (!title || !description || !price || !code || !stock || !category) {
+  if (!title || !description || !price || !code || !stock || !category || !password) {
       res.status(400).json({ error: 'Hay campos que faltan ser completados' });
       return;
   }
@@ -30,10 +38,18 @@ router.post('/', async (req, res) => {
       return;
   }
 
-  let nuevoProducto = await productsManager.addProduct({ title, description, price, thumbnail, code, stock, category });
-  
-  res.setHeader('Content-Type', 'application/json');
-  res.status(201).json({
-      nuevoProducto
-  });
+password=creaHash(password)
+
+try {
+  let nuevoProducto = await productsManager.addProduct({ title, description, price, thumbnail, code, stock, category, password });
+  res.setHeader('Content-Type','application/json');
+  return res.status(201).json({payload:nuevoProducto});
+} catch (error) {
+  res.setHeader('Content-Type','application/json');
+  return res.status(500).json(
+      {
+          error:`Error inesperado en el servidor`,
+          detalle:error.message
+      }) 
+}
 });

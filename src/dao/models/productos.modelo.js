@@ -13,7 +13,8 @@ const prodSchema=new mongoose.Schema(
                 unique: true
             },
             stock: Number,
-            category: String
+            category: String,
+            password: String
     },
     {
             timestamps: true
