@@ -13,44 +13,42 @@ let cart=await cartManager.getCart()
 })
 
 router.post("/", async (req, res) => {
-    let {
-      title,
-      code,
-    } = req.body;
-    
-    // Verificar si alguno de los campos está incompleto
-    if (
-      !title ||
-      !code
-    ) {
-      res.status(400).json({ error: "Hay campos que faltan ser completados" });
-      return;
-    }
-  
-    // Verificar si el código ya existe
-    let dato=req.body
-    if(dato.code){
-        let existCode=await cartManager.getCartBy({code:dato.code})
-    if (existCode) {
-      res
-        .status(400)
-        .json({ error: "Ya existe un producto con el mismo código" });
-      return;
-    }
+  let { id, code } = req.body;
 
-    try {
-      let nuevoCart = await cartManager.addCart({
-        title,
-        code,
-      });
-      res.setHeader("Content-Type", "application/json");
-      return res.status(201).json({ payload: nuevoCart });
-    } catch (error) {
-      res.setHeader("Content-Type", "application/json");
-      return res.status(500).json({
-        error: `Error inesperado en el servidor`,
-        detalle: error.message,
-      });
-    }
-}
-  });
+  // Verificar si alguno de los campos está incompleto
+  if (!id || !code) {
+    res.status(400).json({ error: "Hay campos que faltan ser completados" });
+    return;
+  }
+
+  // Verificar si el código ya existe
+  let existCode = await cartManager.getCartBy({ code: code });
+  if (existCode) {
+    res
+      .status(400)
+      .json({ error: "Ya existe un producto con el mismo código" });
+    return;
+  }
+
+  // Verificar si el id ya existe
+  let existId = await cartManager.getCartBy({ id: id });
+  if (existId) {
+    res.status(400).json({ error: "Ya existe un producto con el mismo id" });
+    return;
+  }
+
+  try {
+    let nuevoCart = await cartManager.addCart({
+      id,
+      code,
+    });
+    res.setHeader("Content-Type", "application/json");
+    return res.status(201).json({ payload: nuevoCart });
+  } catch (error) {
+    res.setHeader("Content-Type", "application/json");
+    return res.status(500).json({
+      error: `Error inesperado en el servidor`,
+      detalle: error.message,
+    });
+  }
+});

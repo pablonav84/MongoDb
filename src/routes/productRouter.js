@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { creaHash, rutaProducts } from "../utils.js";
-import { ProductsManager } from "../dao/ProductsManager.js";
+import { ProductsManager } from "../dao/ProductsManagerMongo.js";
 import mongoose from "mongoose";
 
 export const router = Router();

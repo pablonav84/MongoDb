@@ -41,7 +41,7 @@ const connect = async () => {
   try {
     await mongoose.connect(
       "mongodb+srv://pablonav84:pablo1810@cluster0.1ym0zxu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-      { dbName: "zapas" }
+      { dbName: "ecommerce" }
     );
     console.log("DB Online");
   } catch (error) {

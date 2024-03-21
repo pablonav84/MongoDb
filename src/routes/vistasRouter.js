@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { ProductsManager } from '../dao/ProductsManager.js';
+import { ProductsManager } from '../dao/ProductsManagerMongo.js';
 import { rutaProducts } from '../utils.js';
 
 ProductsManager
